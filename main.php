@@ -27,7 +27,7 @@ if($username!="admin")//elegxei an to username einai  "admin"
     {
       //an to username den vrethei sthn vash tote kane eggrafh ston pinaka 'user' 
         $_SESSION['username']=$username;
-        $querry= "INSERT INTO user(username,password,email,dateCreated,numberOfFiles) VALUES ('$username','$password','$email', NOW(),0)";
+        $querry= "INSERT INTO user(username,password,email,dateCreated) VALUES ('$username','$password','$email', NOW())";
         mysqli_query($db,$querry);
         echo "User Registered !";
     }

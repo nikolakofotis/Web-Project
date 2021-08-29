@@ -60,9 +60,12 @@ $average;
 
 $hours=array();
 
+$mapData=array();
+$mapKeys=array();
+
 foreach($rows as $row)
 {
-  
+  DictionaryAdd($mapKeys,$mapData,$row['userIp'],$row['userLat'],$row['userLong'],$row['latitude'],$row['longitude']);
   $totalGet +=BreakStrings($row['methodGet'],0);
   $totalPost +=BreakStrings($row['methodPost'],0);
   FindUnique($hostArray,$row['userHost']);
@@ -95,8 +98,7 @@ foreach($rows as $row)
 //var_dump($hours[15]);
 
 
-
-
+$mapData=json_encode($mapData);
 $finalJSON=array('image'=>$imageData,'javascript'=>$jsData,'css'=>$cssData,'html'=>$htmlData,'video'=>$VideoData,'app'=>$AppData,'txt'=>$txtData,'total'=>$totalData);
 
 //var_dump($finalJSON);
@@ -113,7 +115,7 @@ $hostCount=count($hostArray);
 
 $output=" -Πλήθος χρηστών: $totalUsers <br> -Πλήθος αιτήσεων τύπου GET: $totalGet <br> -Πλήθος αιτήσεων τύπου POST: $totalPost
 <br>-Πλήθος μοναδικών domain μεσα στην βάση: $domainsCount <br>-Πλήθος μοναδικών παρόχων στην βάση: $hostCount" ;
-
+//var_dump($mapData);
 
 //$output="Δεν έχετε άνεβασει ακόμα κάποιο αρχείο";
 
@@ -227,6 +229,69 @@ function MakeTime(&$tempHour,$data)
     
   }
   
+}
+
+
+
+
+function DictionaryAdd(&$mapKeys,&$array,$key,$userLong,$userLat,$long,$lat)
+{
+
+  $key = preg_replace('/\s+/', '', $key);
+
+  if(!in_array($key,$mapKeys))
+  {
+    array_push($mapKeys,$key);
+    $array[array_search($key, $mapKeys)] = array();
+    $array[array_search($key, $mapKeys)]['userLongitude']=$userLong;
+    $array[array_search($key, $mapKeys)]['userLatitude']=$userLat;
+    $array[array_search($key, $mapKeys)]['longitude'] = array();
+    $array[array_search($key, $mapKeys)]['latitude'] = array();
+    array_push($array[array_search($key, $mapKeys)]['longitude'], $long);
+    array_push($array[array_search($key, $mapKeys)]['latitude'], $lat);
+    
+  }
+  else
+  {
+    array_push($array[array_search($key, $mapKeys)]['longitude'], $long);
+    array_push($array[array_search($key, $mapKeys)]['latitude'], $lat);
+  }
+
+  /*if(empty($array))
+  {
+    array_push($array, $key);
+    $array[$key] = array();
+    $array[$key]['userLongitude']=$userLong;
+    $array[$key]['userLatitude']=$userLat;
+    $array[$key]['longitude'] = array();
+    $array[$key]['latitude'] = array();
+    array_push($array[$key]['longitude'], $long);
+    array_push($array[$key]['latitude'], $lat);
+  }
+  else
+  {
+    if(!in_array($key,$array))
+    {
+      array_push($array, $key);
+    $array[$key] = array();
+    $array[$key]['userLongitude']=$userLong;
+    $array[$key]['userLatitude']=$userLat;
+    $array[$key]['longitude'] = array();
+    $array[$key]['latitude'] = array();
+    array_push($array[$key]['longitude'], $long);
+    array_push($array[$key]['latitude'], $lat);
+
+    }
+    else
+    {
+      array_push($array[$key]['longitude'], $long);
+    array_push($array[$key]['latitude'], $lat);
+
+    }*/
+   
+
+  
+
 }
 
 function FindUnique(&$arrayToPush,$value)
@@ -502,6 +567,18 @@ src="heatmaps.js">
     
 }
 
+#mapid
+  {
+    box-shadow: 8px 8px 8px gray;
+    border-radius: 15px;
+     border: 5px solid #b3b3ff;
+    position: absolute;
+    width:35%;
+    height:500px;
+    left:62%;
+    top:20%;
+
+  }
 
 #contentChart
 {
@@ -669,11 +746,9 @@ a:hover
 </div>
 
 <div id="userInfo">
-
-
-
-
  </div>
+
+ <div id="mapid" ></div>
 
 
 
@@ -704,12 +779,14 @@ echo  "<div id='userInfo'>$output</div>";
   var dataJson = <?php echo $finalJSON; ?>;
 
   var hourJson=<?php echo $hours; ?> ;
+  var mapData=<?php echo $mapData; ?> ;
   
 
 </script>
 
 <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js"></script>
 <script type="text/javascript" src="chartScript.js"></script>
+<script type="text/javascript" src="AdminMap.js"></script>
 
 
   </body>
