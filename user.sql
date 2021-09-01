@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Φιλοξενητής: 127.0.0.1:3306
--- Χρόνος δημιουργίας: 02 Αυγ 2021 στις 18:48:16
+-- Χρόνος δημιουργίας: 01 Σεπ 2021 στις 14:48:04
 -- Έκδοση διακομιστή: 8.0.18
 -- Έκδοση PHP: 7.3.12
 
@@ -43,7 +43,8 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`username`, `password`, `email`, `dateCreated`) VALUES
 ('alekos', 'e15b2d36fbe3ab9583aea246f2e30ef8', 'alekosaek1@gmail.com', '2021-01-14'),
-('fotis', '2e1f4efe9c214062e0b0b3d802b3087f', 'nikolakofotis@gmail.com', '2021-01-11');
+('fotis', '2e1f4efe9c214062e0b0b3d802b3087f', 'nikolakofotis@gmail.com', '2021-01-11'),
+('melina', 'b68dea66d436b444502b2f46f0050a9f', 'melina@gmail.com', '2021-08-22');
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
